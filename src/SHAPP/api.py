@@ -1,12 +1,20 @@
 from tastypie.resources import ModelResource
+from tastypie import authorization
+from tastypie_mongoengine import resources
 from SHAPP.models import Company
 from tastypie.constants import ALL
+from pymongo import MongoClient
+from mongoengine import connect
 
-class EntryResource(ModelResource):
+class EntryResource(resources.MongoEngineResource):
     class Meta:
-        limit = 0
         queryset = Company.objects.all()  
-        print queryset    
+        authorization = authorization.Authorization()  
         resource_name = 'company'
 #         filtering = {'kwd': ALL}
-       
+
+
+ 
+ 
+ 
+        

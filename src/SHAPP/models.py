@@ -1,19 +1,20 @@
 from django.db import models
 import pymongo
 from mongoengine import *
+import mongoengine
 
 connect('test') 
 
 
-class Company(models.Model):    
-    name = StringField()
-    email = EmailField()
-    phone = StringField()
-    pic = StringField()
-    lat = models.FloatField()
-    lon = models.FloatField()
-    description = models.TextField()
-    Founded_Time = models.DateField()
-    kwd = models.CharField(max_length=50)
-    Company_URL = StringField()
-      
+class Company(mongoengine.Document):    
+    name = mongoengine.StringField()
+    email = mongoengine.EmailField()
+    phone = mongoengine.StringField()
+    pic = mongoengine.StringField()
+    lat = mongoengine.FloatField()
+    lon = mongoengine.FloatField()
+    description = mongoengine.StringField()
+    Founded_Time = mongoengine.StringField()
+    kwd = mongoengine.StringField(max_length=50)
+    Company_URL = mongoengine.StringField()
+       

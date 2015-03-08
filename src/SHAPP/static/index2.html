@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<!--
+	Interphase by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Interphase by TEMPLATED</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+			<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=visualization"></script>
+		<script type="text/javascript" src="jquery-1.7.2.js"></script>
+		<script type="text/javascript" src="jquery.eventsource.js"></script>
+		<link href="bootstrap.min.css" rel="stylesheet">
+		<script src="js/jquery.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+	
+
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-xlarge.css" />
+		</noscript>
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+	</head>
+	<body class="landing" onload="initialize()">
+
+		<!-- Header -->
+			<header id="header">
+				<h1><a href="index.html">Wo Kao</a></h1>
+				<nav id="nav">
+					<ul>
+						<li><a href="index2.html">Home</a></li>
+						<li><a href="generic.html">Generic</a></li>
+						<li><a href="elements.html">Elements</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Banner -->
+			<section id="banner">
+				<h2>This is Wo Kao</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+				<ul class="actions">
+					<li>
+						<a href="#" class="button big">Learn More</a>
+					</li>
+				</ul>
+			</section>
+
+		<!-- One -->
+			<section id="one"  background-image="images/pic08.jpg">
+				 
+					  <div id="map_canvas" style=" margin-top: 20px; margin-left:auto; margin-right:auto; width: 90%;height: 500px;"></div>
+					</div>
+			 
+			</section>
+ <script type="text/javascript">
+    
+    var map, pointarray, heatmap;
+    var marker,infowindow;
+    var markers = [];
+    // var e = document.getElementById("select");
+    // var kwd = String(e.options[e.selectedIndex].value);   
+  
+
+    function initialize() {
+     
+        var config = {
+            "radius": 30,
+            "element": "map_canvas",
+            "visible": true,
+            "opacity": 40,
+            "gradient": {
+                0.45: "rgb(0,0,255)",
+                0.55: "rgb(0,255,255)",
+                0.65: "rgb(0,255,0)",
+                0.95: "yellow",
+                1.0: "rgb(255,0,0)"
+            }
+        };
+
+        var myOptions = {
+            zoom: 8,
+            center: new google.maps.LatLng(38.874546, -73.943523),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        
+       
+
+        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        map.setCenter({lat: 40.83, lng: -73.9});
+          
+        map.setZoom(12);
+   	 
+     
+        google.maps.event.addDomListener(window, 'load', initialize);
+        
+        google.maps.event.addListener(map, "idle", function() {
+
+            $.ajax({
+                        url: "http://127.0.0.1:8000/api/company/?format=json",
+              
+                    success: function(data) {
+                    	var dataToStore = JSON.stringify(data);
+                    	localStorage.setItem('datas', dataToStore);
+
+
+                        
+                        for (var key in data.objects) {
+                                                   
+                            var item = data.objects[key]
+                       
+
+                            marker = new google.maps.Marker({
+                                  position: {lat: parseFloat(item.lat), lng: parseFloat(item.lon)},
+                                  draggable: false,
+                                  map: map,
+                    			   
+                                  title: '<p>Company Name: '+item.name+'<br/>'+'<p>'+item.description+'<a href="static/generic.html">'+ 'Read More</a> '
+                                  });
+                           	
+                            marker.id=item.phone;
+                           
+                            markers.push(marker);
+                            
+                            google.maps.event.addListener(marker, 'click', function() {
+                            	if (infowindow) {
+						        infowindow.close();
+						    }
+						        new google.maps.InfoWindow({
+						            content: this.title
+						        }).open(map, this);
+						        map.setZoom(13);
+			                map.setCenter(this.getPosition());
+			                localStorage.removeItem('url');
+			                localStorage.setItem('url', this.id);
+						    });
+
+                            // attachMessage(marker);
+
+                        }
+                        
+                         
+                    },
+                    
+                });
+            
+             
+        });
+        
+        
+         function attachMessage(marker){
+              infowindow = new google.maps.InfoWindow({
+              content: marker.title
+              });
+            
+            google.maps.event.addListener(marker, "click", function() {
+            	if (infowindow) {
+			        infowindow.close();
+			    }
+                infowindow.open(map,this);
+                map.setZoom(9);
+                map.setCenter(marker.getPosition());
+                localStorage.removeItem('url');
+                localStorage.setItem('url', marker.id);
+                });
+       }
+ 
+ 
+    function deleteMarkers() {
+       clearMarkers();
+       markers = [];
+     }
+    function clearMarkers() {
+        setAllMap(null);
+     }
+    function setAllMap(map) {
+       for (var i = 0; i < markers.length; i++) {
+         markers[i].setMap(map);
+       }
+     }
+             
+    }
+          
+   
+</script>
+
+	</body>
+</html>
