@@ -78,11 +78,14 @@
         
         google.maps.event.addListener(map, "idle", function() {
             $.ajax({
-                        url: "http://127.0.0.1:8000/api/tweet/?format=json&kwd="+kwd,
+                        url: "http://127.0.0.1:8000/api/company/?format=json",
                    
                     success: function(data) {
-                        
+                    
+                        alert(data);
+                        alert(data.objects);
                         for (var key in data.objects) {
+                         
                             
                             var item = data.objects[key]
 
