@@ -46,13 +46,13 @@ INSTALLED_APPS = (
 
 
 MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Uncomment the next line for simple clickjacking protection:
+    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 ROOT_URLCONF = 'SH.urls'
@@ -65,14 +65,17 @@ WSGI_APPLICATION = 'SH.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'twit',
-        'USER': 'cccc',
-        'PASSWORD': '12345678',
-        'HOST': 'twit.cx0jrcndrkhz.us-east-1.rds.amazonaws.com',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase',
     }
 }
 
+# DATABASES = {
+#    'default' : {
+#       'ENGINE' : 'django_mongodb_engine',
+#       'NAME' : 'test'
+#    }
+# }
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
@@ -81,7 +84,7 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 
 TEMPLATE_DIRS ={
-                 os.path.join(BASE_DIR,'mysite').replace('\\','/')}
+                 os.path.join(BASE_DIR,'SHAPP').replace('\\','/')}
 
 USE_I18N = True
 
